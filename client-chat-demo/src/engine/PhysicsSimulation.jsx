@@ -75,7 +75,6 @@ const PhysicsSimulation = (props) => {
 
     // Convert to physics coordinates
     const physicsPos = toPhysics(px, py, canvas);
-    console.log(px, py, physicsPos);
 
     chatLogic.addMessage({
       action: "addBody",
@@ -90,7 +89,6 @@ const PhysicsSimulation = (props) => {
     if (!canvasRef.current || !worldRef.current) {
       return;
     }
-    console.log("Render");
 
     const renderTimestamp = Date.now();
 
@@ -112,10 +110,8 @@ const PhysicsSimulation = (props) => {
           ) {
             // advance to next action or break
             if (staticState.actions.length > 0) {
-              console.log("Advancing to next action");
               staticState.worldTimestamp = staticState.actions[0].timestamp;
             } else {
-              console.log("Sleeping");
               setSimulationBehindSec("sleeping");
               break;
             }
@@ -124,7 +120,6 @@ const PhysicsSimulation = (props) => {
             staticState.syncTimestamp - staticState.worldTimestamp;
           const renderDelay =
             renderTimestamp - staticState.worldTimestamp - serverLatency;
-          console.log("render delay", renderDelay);
           if (physicsDt < MS_PER_STEP || (i && renderDelay < CATCH_UP_MS)) {
             break;
           }
@@ -135,7 +130,6 @@ const PhysicsSimulation = (props) => {
           } else {
             setSimulationBehindSec("live");
           }
-          console.log("Step", i, physicsDt);
           while (
             staticState.actions.length > 0 &&
             staticState.worldTimestamp >= staticState.actions[0].timestamp
@@ -144,7 +138,6 @@ const PhysicsSimulation = (props) => {
             const action = message.data.message;
             if (action.action === "addBody") {
               staticState.actionTimestamp = message.timestamp;
-              console.log("Adding body", message);
               const x = action.x / ADD_BODY_POS_SCALE;
               const y = action.y / ADD_BODY_POS_SCALE;
               const color = action.color;
@@ -272,7 +265,6 @@ const PhysicsSimulation = (props) => {
 
   const processMessage = useCallback(
     (message) => {
-      console.log("Message", message);
       const timestamp = message.timestamp;
       staticState.syncTimestamp = timestamp;
       staticState.messageTimestamp = Date.now();

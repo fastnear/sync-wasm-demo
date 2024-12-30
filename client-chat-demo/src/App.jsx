@@ -3,7 +3,9 @@ import PhysicsSimulation from "./engine/PhysicsSimulation.jsx";
 import React, { useState } from "react";
 
 function App() {
-  const [channelId, setChannelId] = useState("global-demo");
+  const [channelId, setChannelId] = useState(
+    new Date().toISOString().split("T")[0],
+  );
   const [start, setStart] = useState(false);
   return (
     <>

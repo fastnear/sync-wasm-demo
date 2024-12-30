@@ -6,7 +6,6 @@ export class ChatLogic {
     this.ws = new WebSocket(WS_URL);
     this.heartbeatInterval = null;
     this.ws.addEventListener("message", (data) => {
-      console.log("Received message:", data);
       try {
         const message = JSON.parse(data.data);
         // this.messages.push(message);
